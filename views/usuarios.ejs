@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>GESTIÓN ESTUDIANTIL</title>
+    <title>Usuarios Registrados</title>
     <style>
         /* Estilos proporcionados por el usuario */
         body {
@@ -67,11 +67,6 @@
         .btn-edit:hover {
             background-color: #218838;
         }
-        .btn-add {
-            margin-bottom: 20px;
-            display: block;
-            text-align: center;
-        }
         .btn-group {
             text-align: center;
             margin-top: 20px;
@@ -84,8 +79,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>GESTIÓN ESTUDIANTIL</h1>
-        
+        <h1>Usuarios Registrados</h1>
+
         <!-- Información del usuario -->
         <div class="user-info">
             <p>Usuario: <%= usuario.username %></p>
@@ -93,54 +88,28 @@
             <a href="/usuarios/logout" class="btn btn-danger">Cerrar Sesión</a>
         </div>
 
-        <a href="http://localhost:3000/estudiantes/agregar" class="btn btn-add">Agregar Estudiante</a>
-        
-        <!-- Formulario para buscar por carrera -->
-        <form id="buscarCarreraForm">
-            <label for="carrera">Buscar por Carrera:</label>
-            <select name="carrera" id="carrera">
-                <option value="Ingeniería en Computación">Ingeniería en Computación</option>
-                <option value="Derecho">Derecho</option>
-                <option value="Medicina">Medicina</option>
-                <option value="Administración">Administración</option>
-                <option value="Contaduría">Contaduría</option>
-                <option value="Ingeniería Industrial">Ingeniería Industrial</option>
-            </select>
-            <button type="submit" class="btn">Buscar</button>
-        </form>
-
-        <script>
-            document.getElementById('buscarCarreraForm').addEventListener('submit', function(event) {
-                event.preventDefault();
-                const carrera = document.getElementById('carrera').value;
-                const url = `/estudiantes/carrera/${encodeURIComponent(carrera)}`;
-                window.location.href = url;
-            });
-        </script>
-
         <div class="btn-group">
-            <a href="http://localhost:3000/estudiantes/inscritos" class="btn">Estudiantes Inscritos</a>
-            <a href="http://localhost:3000/estudiantes/deudas" class="btn">Estudiantes con Deudas</a>
-            <a href="http://localhost:3000/usuarios" class="btn">Ver Todos los Usuarios</a> <!-- Nuevo botón agregado -->
+            <a href="http://localhost:3000/usuarios/agregar" class="btn">Agregar Usuario</a>
         </div>
 
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Nombre</th>
+                    <th>Nombre de Usuario</th>
+                    <th>Rol</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                <% estudiantes.forEach(est => { %>
+                <% usuarios.forEach(usuario => { %>
                     <tr>
-                        <td><%= est.id %></td>
-                        <td><%= est.nombre %></td>
+                        <td><%= usuario.id %></td>
+                        <td><%= usuario.username %></td>
+                        <td><%= usuario.rol %></td>
                         <td>
-                            <a href="/estudiantes/<%= est.id %>" class="btn">Detalles</a>
-                            <a href="/estudiantes/editar/<%= est.id %>" class="btn btn-edit">Editar</a>
-                            <form action="/estudiantes/<%= est.id %>?_method=DELETE" method="POST" style="display: inline;">
+                            <a href="/usuarios/editar/<%= usuario.id %>" class="btn btn-edit">Editar</a>
+                            <form action="/usuarios/<%= usuario.id %>?_method=DELETE" method="POST" style="display: inline;">
                                 <button type="submit" class="btn btn-danger">Eliminar</button>
                             </form>
                         </td>
