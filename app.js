@@ -3,7 +3,7 @@ const path = require('path');
 const app = express();
 const router = express.Router();
 const cookieParser = require('cookie-parser');
-const verificarAutenticacion = require('./middleware/auth');
+const verificarToken = require('./middleware/auth');
 const methodOverride = require('method-override');
 const estudiantesRoutes = require('./routes/estudiantesroutes'); // Ajusta la ruta si es necesario
 const usuariosRoutes = require('./routes/usuariosroutes');
@@ -24,7 +24,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Rutas
-app.use('/estudiantes', verificarAutenticacion, require('./routes/estudiantesroutes'));
+app.use('/estudiantes', verificarToken, require('./routes/estudiantesroutes'));
 app.use('/usuarios', usuariosRoutes);
 
 // Levantar el servidor en el puerto 3000

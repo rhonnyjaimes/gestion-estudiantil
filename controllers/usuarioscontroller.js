@@ -22,8 +22,13 @@ class UsuariosController {
 
     static obtenerUsuarios(req, res) {
         Usuario.obtenerTodos()
-            .then(usuarios => res.status(200).json(usuarios))
-            .catch(error => res.status(500).json({ error: 'Error al obtener usuarios', details: error }));
+            .then(usuarios => {
+                res.render('usuarios', { usuarios, usuario: req.user });
+            })
+            .catch(error => {
+                console.error('Error al obtener usuarios:', error);
+                res.status(500).render('error', { mensaje: 'Error al obtener usuarios', detalles: error });
+            });
     }
 
     static obtenerUsuarioPorId(req, res) {
@@ -48,9 +53,23 @@ class UsuariosController {
 
     static eliminarUsuario(req, res) {
         const { id } = req.params;
+        const usuarioSesion = req.usuario; // Usuario actualmente autenticado, obtenido del middleware de autenticación
+    
         Usuario.eliminar(id)
-            .then(() => res.status(200).json({ message: 'Usuario eliminado exitosamente' }))
-            .catch(error => res.status(500).json({ error: 'Error al eliminar usuario', details: error }));
+            .then(() => {
+                // Verificar si el usuario eliminado es el mismo que el usuario en sesión
+                if (usuarioSesion && usuarioSesion.id === parseInt(id)) {
+                    // Si es así, limpiar la cookie del token para cerrar la sesión
+                    res.clearCookie('token'); // Limpiar la cookie del token
+                    res.redirect('/usuarios/login'); // Redirigir a la página de inicio de sesión
+                } else {
+                    res.redirect('/usuarios'); // Redirigir a la lista de usuarios
+                }
+            })
+            .catch(error => {
+                console.error('Error al eliminar usuario:', error);
+                res.status(500).json({ error: 'Error al eliminar usuario', details: error });
+            });
     }
     static iniciarSesion(req, res) {
         const { username, password } = req.body;

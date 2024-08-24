@@ -67,12 +67,13 @@
         .btn-edit:hover {
             background-color: #218838;
         }
-        .btn-group {
+        .btn-add {
+            margin-bottom: 20px;
+            display: block;
             text-align: center;
-            margin-top: 20px;
         }
         .user-info {
-            text-align: right;
+            text-align: center;
             margin-bottom: 20px;
         }
     </style>
@@ -81,16 +82,8 @@
     <div class="container">
         <h1>Usuarios Registrados</h1>
 
-        <!-- Información del usuario -->
-        <div class="user-info">
-            <p>Usuario: <%= usuario.username %></p>
-            <p>Rol: <%= usuario.rol %></p>
-            <a href="/usuarios/logout" class="btn btn-danger">Cerrar Sesión</a>
-        </div>
-
-        <div class="btn-group">
-            <a href="http://localhost:3000/usuarios/agregar" class="btn">Agregar Usuario</a>
-        </div>
+        <!-- Botón para volver a la vista de estudiantes -->
+        <a href="http://localhost:3000/estudiantes" class="btn">Volver a la Lista de Estudiantes</a>
 
         <table>
             <thead>
