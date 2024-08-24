@@ -1,86 +1,44 @@
 const Usuario = require('../models/Usuario');
-const bcrypt = require('bcrypt');
 
 class UsuariosController {
-    // Método para registrar un nuevo usuario
-    static async registrarUsuario(req, res) {
+    static registrar(req, res) {
         const { username, password, rol } = req.body;
-
-        if (!username || !password || !rol) {
-            return res.status(400).send('Todos los campos son obligatorios');
-        }
-
-        if (rol !== 'Admin' && rol !== 'Editor') {
-            return res.status(400).send('Rol inválido');
-        }
-
-        try {
-            const hashedPassword = await bcrypt.hash(password, 10);
-
-            const nuevoUsuario = await Usuario.create({
-                username,
-                password: hashedPassword,
-                rol
-            });
-
-            res.status(201).send(`Usuario ${nuevoUsuario.username} creado exitosamente`);
-        } catch (error) {
-            res.status(500).send('Error al registrar usuario: ' + error.message);
-        }
+        Usuario.crear({ username, password, rol })
+            .then(id => res.status(201).json({ message: 'Usuario registrado exitosamente', id }))
+            .catch(error => res.status(500).json({ error: 'Error al registrar usuario', details: error }));
     }
 
-    // Método para editar un usuario existente
-    static async editarUsuario(req, res) {
-        const { id } = req.params;
-        const { username, password, rol } = req.body;
-
-        if (!id || !username || !rol) {
-            return res.status(400).send('ID, nombre de usuario y rol son obligatorios');
-        }
-
-        if (rol !== 'Admin' && rol !== 'Editor') {
-            return res.status(400).send('Rol inválido');
-        }
-
-        try {
-            const usuario = await Usuario.findByPk(id);
-            if (!usuario) {
-                return res.status(404).send('Usuario no encontrado');
-            }
-
-            const hashedPassword = password ? await bcrypt.hash(password, 10) : usuario.password;
-
-            await usuario.update({
-                username,
-                password: hashedPassword,
-                rol
-            });
-
-            res.status(200).send(`Usuario ${usuario.username} actualizado exitosamente`);
-        } catch (error) {
-            res.status(500).send('Error al actualizar usuario: ' + error.message);
-        }
+    static obtenerUsuarios(req, res) {
+        Usuario.obtenerTodos()
+            .then(usuarios => res.status(200).json(usuarios))
+            .catch(error => res.status(500).json({ error: 'Error al obtener usuarios', details: error }));
     }
 
-    // Método para eliminar un usuario
-    static async eliminarUsuario(req, res) {
+    static obtenerUsuarioPorId(req, res) {
         const { id } = req.params;
+        Usuario.obtenerPorId(id)
+            .then(usuario => {
+                if (!usuario) {
+                    return res.status(404).json({ error: 'Usuario no encontrado' });
+                }
+                res.status(200).json(usuario);
+            })
+            .catch(error => res.status(500).json({ error: 'Error al obtener usuario', details: error }));
+    }
 
-        if (!id) {
-            return res.status(400).send('ID es obligatorio');
-        }
+    static actualizarUsuario(req, res) {
+        const { id } = req.params;
+        const { username, password, rol } = req.body;
+        Usuario.actualizar(id, { username, password, rol })
+            .then(() => res.status(200).json({ message: 'Usuario actualizado exitosamente' }))
+            .catch(error => res.status(500).json({ error: 'Error al actualizar usuario', details: error }));
+    }
 
-        try {
-            const usuario = await Usuario.findByPk(id);
-            if (!usuario) {
-                return res.status(404).send('Usuario no encontrado');
-            }
-
-            await usuario.destroy();
-            res.status(200).send(`Usuario ${usuario.username} eliminado exitosamente`);
-        } catch (error) {
-            res.status(500).send('Error al eliminar usuario: ' + error.message);
-        }
+    static eliminarUsuario(req, res) {
+        const { id } = req.params;
+        Usuario.eliminar(id)
+            .then(() => res.status(200).json({ message: 'Usuario eliminado exitosamente' }))
+            .catch(error => res.status(500).json({ error: 'Error al eliminar usuario', details: error }));
     }
 }
 

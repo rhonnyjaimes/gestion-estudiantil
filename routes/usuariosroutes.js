@@ -1,15 +1,20 @@
 const express = require('express');
+const router = express.Router();
 const UsuariosController = require('../controllers/usuariosController');
 
-const router = express.Router();
-
 // Ruta para registrar un nuevo usuario
-router.post('/register', UsuariosController.registrarUsuario);
+router.post('/registrar', UsuariosController.registrar);
 
-// Ruta para editar un usuario
-router.put('/edit/:id', UsuariosController.editarUsuario);
+// Ruta para obtener todos los usuarios
+router.get('/', UsuariosController.obtenerUsuarios);
 
-// Ruta para eliminar un usuario
-router.delete('/delete/:id', UsuariosController.eliminarUsuario);
+// Ruta para obtener un usuario por su ID
+router.get('/:id', UsuariosController.obtenerUsuarioPorId);
+
+// Ruta para actualizar un usuario por su ID
+router.put('/:id', UsuariosController.actualizarUsuario);
+
+// Ruta para eliminar un usuario por su ID
+router.delete('/:id', UsuariosController.eliminarUsuario);
 
 module.exports = router;

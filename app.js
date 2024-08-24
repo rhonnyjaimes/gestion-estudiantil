@@ -3,6 +3,8 @@ const path = require('path');
 const app = express();
 const methodOverride = require('method-override');
 const estudiantesRoutes = require('./routes/estudiantesroutes'); // Ajusta la ruta si es necesario
+const usuariosRoutes = require('./routes/usuariosroutes');
+
 
 // Configuración del motor de plantillas ejs
 app.set('view engine', 'ejs');
@@ -18,6 +20,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Rutas
 app.use('/estudiantes', estudiantesRoutes);
+app.use('/usuarios', usuariosRoutes);
+
 
 // Levantar el servidor en el puerto 3000
 const PORT = process.env.PORT || 3000;
