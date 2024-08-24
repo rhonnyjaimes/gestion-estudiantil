@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultados - <%= carrera %></title>
+    <style>
+        /* Reutiliza los estilos de la vista principal */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #007bff;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Estudiantes en <%= carrera %></h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Edad</th>
+                    <th>Inscrito</th>
+                    <th>Deuda</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% estudiantes.forEach(est => { %>
+                    <tr>
+                        <td><%= est.id %></td>
+                        <td><%= est.nombre %></td>
+                        <td><%= est.correo %></td>
+                        <td><%= est.edad %></td>
+                        <td><%= est.inscrito ? 'Sí' : 'No' %></td>
+                        <td><%= est.deuda %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        <a href="/estudiantes" class="btn">Volver a la Página Principal</a>
+    </div>
+</body>
+</html>

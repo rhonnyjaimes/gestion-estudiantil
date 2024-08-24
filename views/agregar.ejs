@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Estudiante</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9f5ff; /* Fondo más claro */
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 60%;
+            margin: 5% auto; /* Centrado verticalmente */
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #007bff; /* Color principal */
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px; /* Tamaño del título */
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px; /* Bordes más redondeados */
+            box-sizing: border-box; /* Incluye padding en el ancho total */
+            font-size: 16px; /* Tamaño del texto */
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #007bff; /* Borde azul al enfocar */
+            outline: none; /* Elimina el borde de enfoque predeterminado */
+        }
+        .cedula-container {
+            display: flex;
+        }
+        .cedula-container select,
+        .cedula-container input {
+            width: auto;
+            margin-right: 8px;
+        }
+        .cedula-container input {
+            flex-grow: 1; /* Deja que el input del número crezca para ocupar el resto del espacio */
+        }
+        .btn {
+            background-color: #007bff; /* Color del botón */
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px; /* Bordes del botón redondeados */
+            margin-top: 20px;
+            transition: background-color 0.3s ease; /* Transición suave */
+        }
+        .btn:hover {
+            background-color: #0056b3; /* Color del botón al pasar el ratón */
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        function validarCedula() {
+            var prefijo = document.getElementById('cedula-prefijo').value;
+            var cedulaNumero = document.getElementById('cedula-numero').value;
+            var cedulaCompleta = prefijo + cedulaNumero;
+            var formatoCedula = /^[VE]-\d{2}\.\d{3}\.\d{3}$/; // Expresión regular para validar el formato V-##.###.###
+
+            // Mostrar la cédula completa en el campo oculto
+            document.getElementById('cedula-completa').value = cedulaCompleta;
+
+            // Verificar si la cédula cumple con el formato
+            if (!formatoCedula.test(cedulaCompleta)) {
+                document.getElementById('error-cedula').innerText = "La cédula debe tener el formato V-##.###.### (ejemplo: V-29.718.095).";
+                return false; // Evita que se envíe el formulario
+            }
+
+            document.getElementById('error-cedula').innerText = ""; // Limpia el mensaje de error si es válido
+            return true; // Permite enviar el formulario
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Agregar Estudiante</h1>
+        <form action="/estudiantes/agregar" method="POST" onsubmit="return validarCedula()">
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
+            </div>
+            <div class="form-group">
+                <label for="cedula">Cédula:</label>
+                <div class="cedula-container">
+                    <select id="cedula-prefijo" required>
+                        <option value="V-">V-</option>
+                        <option value="E-">E-</option>
+                    </select>
+                    <input type="text" id="cedula-numero" placeholder="Número de Cédula" required>
+                </div>
+                <!-- Campo oculto para enviar la cédula completa -->
+                <input type="hidden" id="cedula-completa" name="cedula" required>
+                <!-- Mensaje de error -->
+                <div id="error-cedula" class="error"></div>
+            </div>
+            <div class="form-group">
+                <label for="edad">Edad:</label>
+                <input type="number" id="edad" name="edad" placeholder="Edad" required>
+            </div>
+            <div class="form-group">
+                <label for="carrera">Carrera:</label>
+                <select id="carrera" name="carrera" required>
+                    <option value="">Seleccione una carrera</option>
+                    <option value="Ingeniería en Computación">Ingeniería en Computación</option>
+                    <option value="Derecho">Derecho</option>
+                    <option value="Medicina">Medicina</option>
+                    <option value="Administración">Administración</option>
+                    <option value="Contaduría">Contaduría</option>
+                    <option value="Ingeniería Industrial">Ingeniería Industrial</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="correo">Correo:</label>
+                <input type="email" id="correo" name="correo" placeholder="Correo" required>
+            </div>
+            <div class="form-group">
+                <label for="inscrito">¿Está inscrito?</label>
+                <select id="inscrito" name="inscrito" required>
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="deuda">Deuda:</label>
+                <input type="number" step="0.01" id="deuda" name="deuda" placeholder="Deuda (en Bs.)" required>
+            </div>
+            <button type="submit" class="btn">Agregar</button>
+        </form>
+    </div>
+</body>
+</html>
