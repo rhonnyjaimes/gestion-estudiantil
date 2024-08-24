@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>GESTION ESTUDIANTIL</title>
@@ -22,18 +22,6 @@
         h1 {
             color: #007bff;
             text-align: center;
-        }
-        .membrete {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .membrete p {
-            margin: 0;
-            color: #333;
-        }
-        .membrete img {
-            width: 100px;
-            height: auto;
         }
         table {
             width: 100%;
@@ -88,18 +76,23 @@
             text-align: center;
             margin-top: 20px;
         }
+        .user-info {
+            text-align: right;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="membrete">
-            <img src="/imagen/UVM.png" alt="Logo UVM">
-            <p>Estudiante</p>
-            <p>Rhonny Andres Jaimes Gonzalez C.I V-29.718.095</p>
-            <p>Materia: Backend Intensivo</p>
-            <p>Profesor: Yerson González</p>
-        </div>
         <h1>GESTION ESTUDIANTIL</h1>
+        
+        <!-- Información del usuario -->
+        <div class="user-info">
+            <p>Usuario: <%= usuario.username %></p>
+            <p>Rol: <%= usuario.rol %></p>
+            <a href="/usuarios/logout" class="btn btn-danger">Cerrar Sesión</a>
+        </div>
+
         <a href="http://localhost:3000/estudiantes/agregar" class="btn btn-add">Agregar Estudiante</a>
         
         <!-- Formulario para buscar por carrera -->

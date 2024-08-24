@@ -3,9 +3,15 @@ const conexion = require('../db');
 
 
 exports.obtenerEstudiantes = (req, res) => {
+    // Suponiendo que req.user contiene la información del usuario autenticado
+    const usuario = req.user; // Asegúrate de que req.user esté disponible y tenga los datos necesarios
+
     Estudiante.obtenerTodos(conexion)
         .then(estudiantes => {
-            res.render('index', { estudiantes }); // Renderiza la vista 'index.ejs' pasando los estudiantes
+            res.render('index', { 
+                estudiantes, 
+                usuario // Pasa el objeto usuario a la vista
+            });
         })
         .catch(err => {
             console.error('Error al obtener estudiantes:', err);

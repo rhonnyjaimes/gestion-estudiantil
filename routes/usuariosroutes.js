@@ -3,7 +3,10 @@ const router = express.Router();
 const UsuariosController = require('../controllers/usuariosController');
 
 
-
+router.get('/logout', (req, res) => {
+    res.clearCookie('token'); // Limpiar la cookie del token
+    res.redirect('/usuarios/login'); // Redirigir a la página principal de inicio de sesión
+});
 // Ruta para mostrar el formulario de inicio de sesión
 router.get('/login', (req, res) => {
     res.render('login');
