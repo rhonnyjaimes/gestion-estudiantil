@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
 const app = express();
+const cookieParser = require('cookie-parser');
+const verificarAutenticacion = require('./middleware/auth');
 const methodOverride = require('method-override');
 const estudiantesRoutes = require('./routes/estudiantesroutes'); // Ajusta la ruta si es necesario
 const usuariosRoutes = require('./routes/usuariosroutes');
@@ -14,12 +16,13 @@ app.use(methodOverride('_method'));
 // Middleware para parsear JSON y datos de formularios
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // Configura el middleware para servir archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Rutas
-app.use('/estudiantes', estudiantesRoutes);
+app.use('/estudiantes', verificarAutenticacion, require('./routes/estudiantesroutes'));
 app.use('/usuarios', usuariosRoutes);
 
 

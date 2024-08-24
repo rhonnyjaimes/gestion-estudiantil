@@ -2,6 +2,16 @@ const express = require('express');
 const router = express.Router();
 const UsuariosController = require('../controllers/usuariosController');
 
+
+
+// Ruta para mostrar el formulario de inicio de sesión
+router.get('/login', (req, res) => {
+    res.render('login');
+});
+
+// Ruta para procesar el inicio de sesión
+router.post('/login', UsuariosController.iniciarSesion);
+
 // Ruta para registrar un nuevo usuario
 router.post('/registrar', UsuariosController.registrar);
 

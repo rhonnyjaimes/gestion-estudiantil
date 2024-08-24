@@ -1,4 +1,9 @@
 const Usuario = require('../models/Usuario');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+
+
 
 class UsuariosController {
     static registrar(req, res) {
@@ -39,6 +44,33 @@ class UsuariosController {
         Usuario.eliminar(id)
             .then(() => res.status(200).json({ message: 'Usuario eliminado exitosamente' }))
             .catch(error => res.status(500).json({ error: 'Error al eliminar usuario', details: error }));
+    }
+    static iniciarSesion(req, res) {
+        const { username, password } = req.body;
+
+        Usuario.obtenerPorUsername(username)
+            .then(usuario => {
+                if (!usuario) {
+                    return res.status(401).json({ error: 'Usuario no encontrado' });
+                }
+
+                return bcrypt.compare(password, usuario.password)
+                    .then(coincide => {
+                        if (!coincide) {
+                            return res.status(401).json({ error: 'Contraseña incorrecta' });
+                        }
+
+                        // Crear token JWT
+                        const token = jwt.sign({ id: usuario.id, rol: usuario.rol }, process.env.JWT_SECRET, {
+                            expiresIn: '1h'
+                        });
+
+                        // Enviar cookie con el token
+                        res.cookie('token', token, { httpOnly: true });
+                        res.redirect('/estudiantes');
+                    });
+            })
+            .catch(error => res.status(500).json({ error: 'Error al iniciar sesión', details: error }));
     }
 }
 

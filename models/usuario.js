@@ -8,7 +8,21 @@ class Usuario {
         this.password = password;
         this.rol = rol;
     }
-
+    static obtenerPorUsername(username) {
+        return new Promise((resolve, reject) => {
+            const query = 'SELECT * FROM usuarios WHERE username = ?';
+            conexion.query(query, [username], (err, results) => {
+                if (err) {
+                    return reject(err);
+                }
+                if (results.length === 0) {
+                    return resolve(null);
+                }
+                const usuario = results[0];
+                resolve(new Usuario(usuario.id, usuario.username, usuario.password, usuario.rol));
+            });
+        });
+    }
     static crear({ username, password, rol }) {
         return new Promise((resolve, reject) => {
             const saltRounds = 10;
