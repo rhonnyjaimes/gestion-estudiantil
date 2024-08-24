@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const UsuariosController = require('../controllers/usuariosController');
 
+router.get('/acceso-denegado', (req, res) => {
+    res.render('acceso-denegado'); // Renderiza la vista acceso_denegado.ejs
+});
 
 router.get('/logout', (req, res) => {
     res.clearCookie('token'); // Limpiar la cookie del token
