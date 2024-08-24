@@ -10,6 +10,11 @@ const usuariosRoutes = require('./routes/usuariosroutes');
 const session = require('express-session');
 const flash = require('connect-flash');
 
+
+app.get('/', (req, res) => {
+    res.redirect('/usuarios/login');
+});
+
 // Configuración del motor de plantillas ejs
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views')); 

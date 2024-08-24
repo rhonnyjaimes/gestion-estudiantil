@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const UsuariosController = require('../controllers/usuariosController');
+const verificarToken = require('../middleware/auth');
 
 router.get('/acceso-denegado', (req, res) => {
     res.render('acceso-denegado'); // Renderiza la vista acceso_denegado.ejs
@@ -26,10 +27,10 @@ router.post('/login', UsuariosController.iniciarSesion);
 router.post('/registrar', UsuariosController.registrar);
 
 // Ruta para obtener todos los usuarios
-router.get('/', UsuariosController.obtenerUsuarios);
+router.get('/', verificarToken, UsuariosController.obtenerUsuarios);
 
 // Ruta para obtener un usuario por su ID
-router.get('/:id', UsuariosController.obtenerUsuarioPorId);
+router.get('/:id',verificarToken, UsuariosController.obtenerUsuarioPorId);
 
 // Ruta para actualizar un usuario por su ID
 router.put('/:id', UsuariosController.actualizarUsuario);
