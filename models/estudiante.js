@@ -39,8 +39,16 @@ class Estudiante {
 
     static actualizar(conexion, id, datosActualizados) {
         return new Promise((resolve, reject) => {
-            conexion.query('UPDATE estudiantes SET ? WHERE id = ?', [datosActualizados, id], (err, resultado) => {
-                if (err) return reject(err);
+            // Construir la consulta SQL con los campos a actualizar
+            const query = 'UPDATE estudiantes SET ? WHERE id = ?';
+            
+            // Ejecutar la consulta
+            conexion.query(query, [datosActualizados, id], (err, resultado) => {
+                if (err) {
+                    // Si ocurre un error, rechazar la promesa
+                    return reject(err);
+                }
+                // Resolver la promesa con el número de filas afectadas
                 resolve(resultado.affectedRows);
             });
         });

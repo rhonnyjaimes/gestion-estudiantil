@@ -42,7 +42,21 @@ class UsuariosController {
             })
             .catch(error => res.status(500).json({ error: 'Error al obtener usuario', details: error }));
     }
-
+    static editarUsuario(req, res) {
+        const { id } = req.params;
+        Usuario.obtenerPorId(id)
+            .then(usuario => {
+                if (!usuario) {
+                    return res.status(404).json({ error: 'Usuario no encontrado' });
+                }
+                // Renderiza la vista 'editarusuarios.ejs' y pasa los datos del usuario
+                res.render('editarusuarios', { usuario });
+            })
+            .catch(error => {
+                console.error('Error al obtener usuario:', error);
+                res.status(500).json({ error: 'Error al obtener usuario', details: error });
+            });
+    }
     static actualizarUsuario(req, res) {
         const { id } = req.params;
         const { username, password, rol } = req.body;

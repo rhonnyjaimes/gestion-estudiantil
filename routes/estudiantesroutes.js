@@ -15,11 +15,12 @@ router.get('/deudas', verificarRol(['admin', 'editor']), estudiantesController.o
 router.get('/agregar', verificarRol(['admin']), (req, res) => {
     res.render('agregar'); // Renderiza la vista agregar.ejs
 });
+
 router.post('/agregar', verificarRol(['admin']), estudiantesController.crearEstudiante);
 
 // Ruta para editar estudiante (Admin y Editor)
 router.get('/editar/:id', verificarRol(['admin', 'editor']), estudiantesController.mostrarEditarEstudiante);
-router.put('/editar/:id', verificarRol(['admin', 'editor']), estudiantesController.actualizarEstudiante);
+router.put('/:id',  estudiantesController.actualizarEstudiante);
 
 // Ruta para obtener un estudiante por su ID (Admin y Editor)
 router.get('/:id', verificarRol(['admin', 'editor']), estudiantesController.obtenerEstudiantePorId);
@@ -30,7 +31,7 @@ router.delete('/:id', verificarRol(['admin']), estudiantesController.eliminarEst
 // Ruta para obtener estudiantes por carrera (Admin y Editor)
 router.get('/carrera/:carrera', verificarRol(['admin', 'editor']), estudiantesController.obtenerEstudiantesPorCarrera);
 
-// Ruta para obtener todos los estudiantes (Admin y Editor)
-router.get('/', verificarRol(['admin', 'editor']), estudiantesController.obtenerEstudiantes);
+// Ruta para obtener todos los estudiantes (solo Admin)
+router.get('/', verificarRol(['admin', "editor"]), estudiantesController.obtenerEstudiantes);
 
 module.exports = router;
