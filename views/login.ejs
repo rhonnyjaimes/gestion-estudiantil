@@ -12,11 +12,13 @@
         }
         .container {
             width: 80%;
+            max-width: 500px;
             margin: 0 auto;
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
         }
         h1, h2 {
             color: #007bff;
@@ -34,9 +36,14 @@
             margin: 0;
             color: #333;
         }
+        .alert {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
         form {
-            max-width: 400px;
-            margin: 0 auto;
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;
@@ -85,6 +92,13 @@
             <p>Profesor: Yerson González</p>
         </div>
         <h2>Iniciar Sesión</h2>
+        <% if (error_messages && error_messages.length > 0) { %>
+            <div class="alert">
+                <% error_messages.forEach(msg => { %>
+                    <p><%= msg %></p>
+                <% }) %>
+            </div>
+        <% } %>
         <form action="/usuarios/login" method="POST">
             <label for="username">Usuario:</label>
             <input type="text" id="username" name="username" required>

@@ -1,7 +1,7 @@
 const Usuario = require('../models/Usuario');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
+const flash = require('connect-flash');
 
 
 
@@ -9,8 +9,15 @@ class UsuariosController {
     static registrar(req, res) {
         const { username, password, rol } = req.body;
         Usuario.crear({ username, password, rol })
-            .then(id => res.status(201).json({ message: 'Usuario registrado exitosamente', id }))
-            .catch(error => res.status(500).json({ error: 'Error al registrar usuario', details: error }));
+            .then(id => {
+                // Redirige al usuario a la página de inicio de sesión
+                res.redirect('/usuarios/login');
+            })
+            .catch(error => {
+                // En caso de error, muestra un mensaje de error en la misma página de registro
+                req.flash('error', 'Error al registrar usuario. Inténtalo de nuevo.');
+                res.redirect('/usuarios/registrar');
+            });
     }
 
     static obtenerUsuarios(req, res) {
@@ -51,26 +58,44 @@ class UsuariosController {
         Usuario.obtenerPorUsername(username)
             .then(usuario => {
                 if (!usuario) {
-                    return res.status(401).json({ error: 'Usuario no encontrado' });
+                    return res.render('login', { error_messages: ['Usuario no encontrado'] });
                 }
 
                 return bcrypt.compare(password, usuario.password)
                     .then(coincide => {
                         if (!coincide) {
-                            return res.status(401).json({ error: 'Contraseña incorrecta' });
+                            return res.render('login', { error_messages: ['Contraseña incorrecta'] });
                         }
 
-                        // Crear token JWT
-                        const token = jwt.sign({ id: usuario.id, rol: usuario.rol }, process.env.JWT_SECRET, {
-                            expiresIn: '1h'
-                        });
+                        // Función para generar el token JWT
+                        const generarToken = (usuario) => {
+                            if (!usuario.id || !usuario.rol) {
+                                throw new Error('Usuario debe tener id y rol');
+                            }
+
+                            // Genera el token con un payload y una clave secreta
+                            return jwt.sign(
+                                {
+                                    id: usuario.id,
+                                    rol: usuario.rol,
+                                    username: usuario.username // Incluye otros datos si es necesario
+                                },
+                                process.env.JWT_SECRET, // Clave secreta
+                                {
+                                    expiresIn: '1h' // Tiempo de expiración del token
+                                }
+                            );
+                        };
+
+                        // Genera el token
+                        const token = generarToken(usuario);
 
                         // Enviar cookie con el token
                         res.cookie('token', token, { httpOnly: true });
                         res.redirect('/estudiantes');
                     });
             })
-            .catch(error => res.status(500).json({ error: 'Error al iniciar sesión', details: error }));
+            .catch(error => res.render('login', { error_messages: ['Error al iniciar sesión'] }));
     }
 }
 

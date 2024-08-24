@@ -3,8 +3,8 @@ const conexion = require('../db');
 
 
 exports.obtenerEstudiantes = (req, res) => {
-    // Suponiendo que req.user contiene la información del usuario autenticado
-    const usuario = req.user; // Asegúrate de que req.user esté disponible y tenga los datos necesarios
+    const usuario = req.user; // Verifica que req.user tiene la información correcta
+    console.log('Usuario:', usuario); // Imprime el objeto usuario en la consola
 
     Estudiante.obtenerTodos(conexion)
         .then(estudiantes => {

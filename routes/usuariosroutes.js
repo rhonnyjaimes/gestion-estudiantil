@@ -9,7 +9,11 @@ router.get('/logout', (req, res) => {
 });
 // Ruta para mostrar el formulario de inicio de sesión
 router.get('/login', (req, res) => {
-    res.render('login');
+    res.render('login', { error_messages: [] });
+});
+
+router.get('/registrar', (req, res) => {
+    res.render('registrar'); // Renderiza la vista 'registrar.ejs'
 });
 
 // Ruta para procesar el inicio de sesión

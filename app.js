@@ -6,7 +6,8 @@ const verificarAutenticacion = require('./middleware/auth');
 const methodOverride = require('method-override');
 const estudiantesRoutes = require('./routes/estudiantesroutes'); // Ajusta la ruta si es necesario
 const usuariosRoutes = require('./routes/usuariosroutes');
-
+const session = require('express-session');
+const flash = require('connect-flash');
 
 // Configuración del motor de plantillas ejs
 app.set('view engine', 'ejs');
