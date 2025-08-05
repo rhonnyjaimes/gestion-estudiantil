@@ -5,10 +5,10 @@ const router = express.Router();
 const cookieParser = require('cookie-parser');
 const verificarToken = require('./middleware/auth');
 const methodOverride = require('method-override');
-const estudiantesRoutes = require('./routes/estudiantesroutes'); // Ajusta la ruta si es necesario
 const usuariosRoutes = require('./routes/usuariosroutes');
 const session = require('express-session');
 const flash = require('connect-flash');
+const estudiantesroutes = require("./routes/estudiantesRoutes.js");
 
 
 app.get('/', (req, res) => {
@@ -29,7 +29,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Rutas
-app.use('/estudiantes', verificarToken, require('./routes/estudiantesroutes'));
+app.use('/estudiantes', verificarToken, estudiantesroutes);
 app.use('/usuarios', usuariosRoutes);
 
 // Levantar el servidor en el puerto 3000

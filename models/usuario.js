@@ -82,6 +82,15 @@ class Usuario {
             });
         });
     }
+    static pagarDeuda(conexion, id) {
+        return new Promise((resolve, reject) => {
+            const query = 'UPDATE estudiantes SET deuda = 0 WHERE id = ?';
+            conexion.query(query, [id], (err, resultados) => {
+                if (err) return reject(err);
+                resolve(resultados);
+            });
+        });
+    }
 }
 
 module.exports = Usuario;

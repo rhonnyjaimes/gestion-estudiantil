@@ -78,16 +78,51 @@
                     <th>Correo</th>
                     <th>Carrera</th>
                     <th>Monto Deuda</th>
+                    <th>Acción</th>
                 </tr>
             </thead>
+            
+        </td>
+        <script>
+            function marcarSolvente(id) {
+                if (confirm('¿Estás seguro de que deseas marcar al estudiante como solvente?')) {
+                    console.log(`Intentando marcar al estudiante ${id} como solvente.`);
+                    fetch(`/estudiantes/${id}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ inscrito: 0 }) // Aquí enviamos el campo a actualizar
+                    })
+                    .then(response => {
+                        console.log(`Respuesta recibida: ${response.status}`);
+                        if (response.ok) {
+                            alert('Estudiante marcado como solvente.');
+                            location.reload(); // Recargar la página para mostrar el cambio
+                        } else {
+                            alert('Error al procesar el pago.');
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Error al enviar la solicitud:', err);
+                        alert('Error al procesar la solicitud.');
+                    });
+                }
+            }
+        </script>
+        
             <tbody>
                 <% estudiantesConDeuda.forEach(est => { %>
-                    <tr>
+                    <tr id="estudiante-<%= est.id %>">
                         <td><%= est.id %></td>
                         <td><%= est.nombre %></td>
                         <td><%= est.correo %></td>
                         <td><%= est.carrera %></td>
                         <td class="deuda"><%= est.deuda %> BS</td>
+                        <td>
+                            <button class="btn" onclick="marcarSolvente(<%= est.id %>)">Marcar como Solvente</button>
+                        </td>
+                                                                                
                     </tr>
                 <% }) %>
             </tbody>
@@ -95,5 +130,7 @@
         <!-- Botón para volver a la página principal -->
         <a href="/estudiantes" class="btn btn-back">Volver a la Página Principal</a>
     </div>
+
+    
 </body>
 </html>

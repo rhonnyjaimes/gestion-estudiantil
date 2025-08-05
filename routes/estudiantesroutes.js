@@ -4,8 +4,14 @@ const estudiantesController = require('../controllers/estudiantescontroller');
 const verificarToken = require('../middleware/auth');
 const verificarRol = require('../middleware/roles');
 
+router.get('/deudas/confirmar-pago/:id',verificarRol(['admin', 'editor']), (req, res) => {
+    const estudianteId = req.params.id;
+    res.render('confirmarPago', { estudianteId });
+});
+
 // Middleware para verificar el token en todas las rutas
 router.use(verificarToken);
+
 
 // Rutas para obtener estudiantes inscritos y con deuda (acceso para Admin y Editor)
 router.get('/inscritos', verificarRol(['admin', 'editor']), estudiantesController.obtenerEstudiantesInscritos);

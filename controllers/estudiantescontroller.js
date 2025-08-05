@@ -94,3 +94,13 @@ exports.obtenerEstudiantesConDeuda = (req, res) => {
         .catch(err => res.status(500).json({ error: err.message }));
 };
 
+exports.pagarDeuda = (req, res) => {
+    const estudianteId = req.params.id;
+    Estudiante.pagarDeuda(conexion, estudianteId)
+        .then(() => {
+            res.json({ success: true, message: 'Estudiante marcado como solvente.' });
+        })
+        .catch(err => {
+            res.status(500).json({ success: false, error: err.message });
+        });
+};
