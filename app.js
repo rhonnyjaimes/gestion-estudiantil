@@ -8,7 +8,7 @@ const methodOverride = require('method-override');
 const usuariosRoutes = require('./routes/usuariosroutes');
 const session = require('express-session');
 const flash = require('connect-flash');
-const estudiantesroutes = require("./routes/estudiantesRoutes.js");
+const estudiantesroutes = require("./routes/estudiantesroutes.js");
 
 
 app.get('/', (req, res) => {
