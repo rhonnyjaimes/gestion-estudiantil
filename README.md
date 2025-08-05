@@ -18,7 +18,7 @@ Este proyecto es una aplicación backend desarrollada en Node.js con Express, co
 
 1. **Clona el repositorio**:
 
-    git clone https://github.com/rhonnyjaimes/Backend-Intensivo-Act-3.git
+    git clone https://github.com/rhonnyjaimes/gestion-estudiantil.git
 
 2. **Navega al directorio del proyecto**:
 
