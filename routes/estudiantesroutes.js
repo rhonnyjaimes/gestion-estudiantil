@@ -18,11 +18,11 @@ router.get('/inscritos', verificarRol(['admin', 'editor']), estudiantesControlle
 router.get('/deudas', verificarRol(['admin', 'editor']), estudiantesController.obtenerEstudiantesConDeuda);
 
 // Ruta para agregar estudiante (solo Admin)
-router.get('/agregar', verificarRol(['admin']), (req, res) => {
+router.get('/agregar', verificarRol(['admin', "editor"]), (req, res) => {
     res.render('agregar'); // Renderiza la vista agregar.ejs
 });
 
-router.post('/agregar', verificarRol(['admin']), estudiantesController.crearEstudiante);
+router.post('/agregar', verificarRol(['admin', "editor"]), estudiantesController.crearEstudiante);
 
 // Ruta para editar estudiante (Admin y Editor)
 router.get('/editar/:id', verificarRol(['admin', 'editor']), estudiantesController.mostrarEditarEstudiante);
